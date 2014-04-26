@@ -30,7 +30,7 @@ Registers hit for given _id_ (must be plain string).
 queue.hit('raz'); // size: 1
 ```
 
-If hit doesn't remove any old item from list it returns `undefined`, otherwise it returns removed _id_.
+If hit doesn't remove any old item from list it returns `undefined`, otherwise removed _id_ is returned.
 
 
 ```javascript
@@ -53,7 +53,7 @@ queue.delete('cztery'); // size: 1
 
 #### queue.clear();
 
-Resets queue
+Resets the queue
 
 ```javascript
 queue.clear(); // size: 0
