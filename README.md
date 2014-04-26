@@ -3,7 +3,7 @@
 
 _Originally derived from [memoizee](https://github.com/medikoo/memoize) package._
 
-It's low-level utility meant to be used internally within sophisticated cache algorithms. It backs up [`max`](https://github.com/medikoo/memoize#limiting-cache-size) functionality in [memoizee](https://github.com/medikoo/memoize) utility.
+It's low-level utility meant to be used internally within cache algorithms. It backs up [`max`](https://github.com/medikoo/memoize#limiting-cache-size) functionality in [memoizee](https://github.com/medikoo/memoize) project.
 
 ### Installation
 
