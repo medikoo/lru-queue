@@ -8,7 +8,7 @@ It's low-level utility meant to be used internally within sophisticated cache al
 ### Installation
 
 	$ npm install lru-queue
-	
+
 To port it to Browser or any other (non CJS) environment, use your favorite CJS bundler. No favorite yet? Try: [Browserify](http://browserify.org/), [Webmake](https://github.com/medikoo/modules-webmake) or [Webpack](http://webpack.github.io/)
 
 ### Usage
@@ -16,8 +16,8 @@ To port it to Browser or any other (non CJS) environment, use your favorite CJS 
 Create queue, and provide a limit
 
 ```javascript
-var LruQueue = require('lru-queue');
-var queue = new LruQueue(3); // limit size to 3
+var lruQueue = require('lru-queue');
+var queue = lruQueue(3); // limit size to 3
 ```
 
 Each queue exposes three methods:
@@ -30,24 +30,21 @@ Registers hit for given _id_ (must be plain string).
 queue.hit('raz'); // size: 1
 ```
 
-If it was never hit before, and queue is already at it's maximum size, it removes oldest hit _id_ and emits it via `overflow` event;
+If hit doesn't remove any old item from list it returns `undefined`, otherwise it returns removed _id_.
+
 
 ```javascript
-queue.on('overflow', function (id) {
-  console.log("Overflow", id);
-});
-
-queue.hit('dwa');    // size: 2  
-queue.hit('trzy');   // size: 3 (at max)
-queue.hit('raz');    // size: 3 (at max)
-queue.hit('dwa');    // size: 3 (at max)
-queue.hit('cztery'); //  'trzy' removed, size: 3 (at max)
+queue.hit('dwa');    // undefined, size: 2
+queue.hit('trzy');   // undefined, size: 3 (at max)
+queue.hit('raz');    // undefined, size: 3 (at max)
+queue.hit('dwa');    // undefined, size: 3 (at max)
+queue.hit('cztery'); //  'trzy', size: 3 (at max)
 
 ```
 
 #### queue.delete(id);
 
-_id's_ can be cleared from queue externally (no overflow events are emitted)
+_id's_ can be cleared from queue externally
 
 ```javascript
 queue.delete('raz'); // size: 2
