@@ -38,7 +38,7 @@ queue.hit('dwa');    // undefined, size: 2
 queue.hit('trzy');   // undefined, size: 3 (at max)
 queue.hit('raz');    // undefined, size: 3 (at max)
 queue.hit('dwa');    // undefined, size: 3 (at max)
-queue.hit('cztery'); //  'trzy', size: 3 (at max)
+queue.hit('cztery'); // 'trzy', size: 3 (at max)
 
 ```
 
