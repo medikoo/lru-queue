@@ -38,11 +38,10 @@ module.exports = function (limit) {
 			while (!hasOwnProperty.call(queue, ++base)) continue; //jslint: ignore
 		},
 		clear: function () {
-			size = 0;
+			size = index = 0;
 			base = 1;
 			queue = create(null);
 			map = create(null);
-			index = 0;
 		}
 	};
 };
