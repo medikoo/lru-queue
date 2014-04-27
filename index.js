@@ -21,7 +21,7 @@ module.exports = function (limit) {
 			}
 			delete queue[oldIndex];
 			if (base !== oldIndex) return;
-			while (!hasOwnProperty.call(queue, ++base)) continue; //jslint: skip
+			while (!hasOwnProperty.call(queue, ++base)) continue; //jslint: ignore
 		},
 		delete: del = function (id) {
 			var oldIndex = map[id];
@@ -35,7 +35,7 @@ module.exports = function (limit) {
 				base = 1;
 				return;
 			}
-			while (!hasOwnProperty.call(queue, ++base)) continue; //jslint: skip
+			while (!hasOwnProperty.call(queue, ++base)) continue; //jslint: ignore
 		},
 		clear: function () {
 			size = 0;
