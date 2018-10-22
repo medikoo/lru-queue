@@ -2,34 +2,47 @@
 
 var toPosInt = require("es5-ext/number/to-pos-integer");
 
-module.exports = function(limit) {
-	var queue = new Set(),
-		lastKey = undefined,
-		limit = toPosInt(limit),
-		del;
+var create = Object.create;
+
+module.exports = function (limit) {
+	var size = 0, base = 1, queue = create(null), map = create(null), index = 0, del;
+	limit = toPosInt(limit);
 	return {
-		hit: function(id) {
-			if (lastKey === id) return;
-			lastKey = id;
-			if (queue.delete(id)) {
-				queue.add(id);
+		hit: function (id) {
+			var oldIndex = map[id], nuIndex = ++index;
+			queue[nuIndex] = id;
+			map[id] = nuIndex;
+			if (!oldIndex) {
+				++size;
+				if (size <= limit) return undefined;
+				id = queue[base];
+				del(id);
+				return id;
+			}
+			delete queue[oldIndex];
+			if (base !== oldIndex) return undefined;
+			while (!hasOwnProperty.call(queue, ++base)) continue; // jslint: ignore
+			return undefined;
+		},
+		delete: (del = function (id) {
+			var oldIndex = map[id];
+			if (!oldIndex) return;
+			delete queue[oldIndex];
+			delete map[id];
+			--size;
+			if (base !== oldIndex) return;
+			if (!size) {
+				index = 0;
+				base = 1;
 				return;
 			}
-			queue.add(id);
-			if (queue.size > limit) {
-				var base = queue.keys().next().value;
-				queue.delete(base);
-				return base;
-			}
-		},
-		delete: (del = function(id) {
-			if (lastKey === id) {
-				lastKey = undefined;
-			}
-			queue.delete(id);
+			while (!hasOwnProperty.call(queue, ++base)) continue; // jslint: ignore
 		}),
-		clear: function() {
-			queue.clear();
+		clear: function () {
+			size = index = 0;
+			base = 1;
+			queue = create(null);
+			map = create(null);
 		}
 	};
 };
