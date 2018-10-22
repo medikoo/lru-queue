@@ -14,8 +14,9 @@ module.exports = function (limit) {
 	limit = toPosInt(limit);
 	return {
 		hit: function (id) {
-			var oldIndex = map[id],
-				nuIndex = ++index;
+			var oldIndex = map[id];
+			if (oldIndex === index) return undefined;
+			var nuIndex = ++index;
 			queue[nuIndex] = id;
 			map[id] = nuIndex;
 			if (!oldIndex) {
