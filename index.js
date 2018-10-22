@@ -1,8 +1,8 @@
 "use strict";
 
-var toPosInt = require("es5-ext/number/to-pos-integer")
+var toPosInt = require("es5-ext/number/to-pos-integer");
 
-  , create = Object.create, hasOwnProperty = Object.prototype.hasOwnProperty;
+var create = Object.create, hasOwnProperty = Object.prototype.hasOwnProperty;
 
 module.exports = function (limit) {
 	var size = 0, base = 1, queue = create(null), map = create(null), index = 0, del;
@@ -23,7 +23,7 @@ module.exports = function (limit) {
 			if (base !== oldIndex) return;
 			while (!hasOwnProperty.call(queue, ++base)) continue; // jslint: ignore
 		},
-		delete: del = function (id) {
+		delete: (del = function (id) {
 			var oldIndex = map[id];
 			if (!oldIndex) return;
 			delete queue[oldIndex];
@@ -36,7 +36,7 @@ module.exports = function (limit) {
 				return;
 			}
 			while (!hasOwnProperty.call(queue, ++base)) continue; // jslint: ignore
-		},
+		}),
 		clear: function () {
 			size = index = 0;
 			base = 1;
