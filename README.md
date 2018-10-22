@@ -63,7 +63,7 @@ Resets the queue
 queue.clear(); // size: 0
 ```
 
-### Tests [![Build Status](https://travis-ci.org/medikoo/lru-queue.png)](https://travis-ci.org/medikoo/lru-queue)
+### Tests
 
     $ npm test
 
