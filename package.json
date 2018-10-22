@@ -16,9 +16,16 @@
     "es5-ext": "~0.10.2"
   },
   "devDependencies": {
+    "eslint": "^5.7",
+    "eslint-config-medikoo-es5": "^1.7.2",
     "tad": "~0.2.7"
   },
+  "eslintConfig": {
+    "extends": "medikoo-es5",
+    "root": true
+  },
   "scripts": {
+    "lint": "eslint --ignore-path=.gitignore .",
     "test": "node node_modules/tad/bin/tad"
   },
   "license": "ISC"
