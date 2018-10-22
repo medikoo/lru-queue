@@ -2,7 +2,7 @@
 
 var toPosInt = require("es5-ext/number/to-pos-integer");
 
-var create = Object.create, hasOwnProperty = Object.prototype.hasOwnProperty;
+var create = Object.create;
 
 module.exports = function (limit) {
 	var size = 0, base = 1, queue = create(null), map = create(null), index = 0, del;
@@ -14,14 +14,15 @@ module.exports = function (limit) {
 			map[id] = nuIndex;
 			if (!oldIndex) {
 				++size;
-				if (size <= limit) return;
+				if (size <= limit) return undefined;
 				id = queue[base];
 				del(id);
 				return id;
 			}
 			delete queue[oldIndex];
-			if (base !== oldIndex) return;
+			if (base !== oldIndex) return undefined;
 			while (!hasOwnProperty.call(queue, ++base)) continue; // jslint: ignore
+			return undefined;
 		},
 		delete: (del = function (id) {
 			var oldIndex = map[id];
