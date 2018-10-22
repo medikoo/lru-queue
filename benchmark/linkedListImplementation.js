@@ -1,85 +1,82 @@
 "use strict";
-
 var toPosInt = require("es5-ext/number/to-pos-integer");
 
-module.exports = function(limit) {
-	var firstNode,
-		lastNode,
-		keymap = new Map(),
-		size = 0;
+var LinkedList = function () {
+	this.firstNode = this.lastNode = undefined;
+	// eslint-disable-next-line no-undef
+	this.keymap = new Map();
+};
+
+LinkedList.prototype.removeNode = function (node, updateKeymap) {
+	if (node.next) {
+		node.next.previous = node.previous;
+	}
+	if (node.previous) {
+		node.previous.next = node.next;
+	}
+	if (node === this.lastNode) {
+		this.lastNode = node.previous;
+		if (updateKeymap) {
+			this.keymap.delete(node.key);
+		}
+	}
+	node.next = node.previous = undefined;
+};
+
+LinkedList.prototype.appendToHead = function (node, updateKeymap) {
+	if (this.firstNode) {
+		node.next = this.firstNode;
+		this.firstNode.previous = node;
+	} else {
+		this.lastNode = node;
+	}
+	this.firstNode = node;
+	if (updateKeymap) {
+		this.keymap.set(node.key, node);
+	}
+};
+
+LinkedList.prototype.clear = function () {
+	this.firstNode = this.lastNode = undefined;
+	this.keymap.clear();
+};
+
+LinkedList.prototype.getNode = function (key) {
+	return this.keymap.get(key);
+};
+
+LinkedList.prototype.getSize = function () {
+	return this.keymap.size;
+};
+
+module.exports = function (limit) {
+	var list = new LinkedList();
 	limit = toPosInt(limit);
 
-	function removeNode(node, updateKeymap) {
-		var previous = node.previous;
-		var next = node.next;
-		if (next) {
-			next.previous = previous;
-		}
-		if (previous) {
-			previous.next = next;
-		}
-		if (node === lastNode) {
-			lastNode = previous;
-			if (updateKeymap) {
-				keymap.delete(node.key);
-				size--;
-			}
-		}
-		node.next = node.previous = undefined;
-	}
-	function appendToHead(node, updateKeymap) {
-		node.next = firstNode;
-		if (firstNode) {
-			firstNode.previous = node;
-		}
-		firstNode = node;
-		if (!lastNode) {
-			lastNode = node;
-		}
-		if (updateKeymap) {
-			keymap.set(node.key, node);
-			size++;
-		}
-	}
-
 	return {
-		hit: function(key) {
-			if (!keymap.has(key)) {
-				appendToHead({ key: key }, true);
-			} else {
-				var node = keymap.get(key);
-				if (node !== firstNode) {
-					removeNode(node, false);
-					appendToHead(node, false);
-				}
+		hit: function (key) {
+			var node = list.getNode(key);
+			if (!node) {
+				list.appendToHead({ key: key }, true);
+			} else if (node !== list.firstNode) {
+				list.removeNode(node, false);
+				list.appendToHead(node, false);
 			}
-			if (size > limit) {
-				var keyToremove = lastNode.key;
-				removeNode(lastNode, true);
+			if (list.getSize() > limit) {
+				var keyToremove = list.lastNode.key;
+				list.removeNode(list.lastNode, true);
 				return keyToremove;
 			}
+			return undefined;
 		},
-		dump: function() {
-			var list = new Array(size);
-			for (var node = firstNode, index = 0; node; index++, node = node.next) {
-				list[index] = node.key;
-			}
-			return [
-				list,
-				firstNode ? firstNode.key : undefined,
-				lastNode ? lastNode.key : undefined
-			];
-		},
-		delete: function(key) {
-			var node = keymap.get(key);
+		delete: function (key) {
+			var node = list.getNode(key);
 			if (node) {
-				removeNode(node, true);
+				list.removeNode(node, true);
 			}
 		},
-		clear: function() {
-			firstNode = lastNode = undefined;
-			keymap.clear();
-			size = 0;
+		clear: function () {
+			list.clear();
 		}
 	};
 };

@@ -26,6 +26,7 @@
   },
   "scripts": {
     "lint": "eslint --ignore-path=.gitignore .",
+    "fix-lint": "eslint --ignore-path=.gitignore . --fix",
     "test": "node node_modules/tad/bin/tad index.js",
     "benchmark": "node benchmark/index.js"
   },

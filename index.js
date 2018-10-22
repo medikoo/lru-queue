@@ -5,11 +5,17 @@ var toPosInt = require("es5-ext/number/to-pos-integer");
 var create = Object.create;
 
 module.exports = function (limit) {
-	var size = 0, base = 1, queue = create(null), map = create(null), index = 0, del;
+	var size = 0,
+		base = 1,
+		queue = create(null),
+		map = create(null),
+		index = 0,
+		del;
 	limit = toPosInt(limit);
 	return {
 		hit: function (id) {
-			var oldIndex = map[id], nuIndex = ++index;
+			var oldIndex = map[id],
+				nuIndex = ++index;
 			queue[nuIndex] = id;
 			map[id] = nuIndex;
 			if (!oldIndex) {

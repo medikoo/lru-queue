@@ -1,75 +1,75 @@
+"use strict";
 var performance = require("perf_hooks").performance;
 var oldImplementation = require("./oldImplementation");
 var linkedListImplementation = require("./linkedListImplementation");
 var currentImplementation = require("..");
 
-function randomInsert(LruQueue) {
-	var N = 250000;
-	var queue = LruQueue(5);
+var randomInsert = function (lruQueue) {
+	var maximumValue = 1250000;
+	var queue = lruQueue(5);
 	for (var counter = 0; counter < 33; counter++) {
-		for (var i = 0; i < 10 * N; ++i) {
-			var index = Math.floor(Math.random() * 5 * N);
+		for (var i = 0; i < 2 * maximumValue; ++i) {
+			var index = Math.floor(Math.random() * maximumValue);
 			queue.hit(index);
 		}
 	}
-}
+};
 
-function incrementInsert(LruQueue) {
-	var N = 250000;
-	var queue = LruQueue(5);
+var incrementInsert = function (lruQueue) {
+	var maximumValue = 250000;
+	var queue = lruQueue(5);
 	for (var counter = 0; counter < 33; counter++) {
-		for (var i = 0; i < 10 * N; ++i) {
+		for (var i = 0; i < 10 * maximumValue; ++i) {
 			queue.hit(Math.floor(i / 10));
 		}
 	}
-}
+};
 
-function frequentHit(LruQueue) {
-	var queue = LruQueue(5);
+var frequentHit = function (lruQueue) {
+	var queue = lruQueue(5);
 	queue.hit("a");
-	for (let counter = 0; counter < 1e3; counter++) {
-		for (let counter2 = 0; counter2 < 1e5; counter2++) {
+	for (var counter = 0; counter < 1e3; counter++) {
+		for (var counter2 = 0; counter2 < 1e5; counter2++) {
 			queue.hit("b");
 		}
 		queue.hit("a");
 	}
-}
+};
 
-function cyclical(LruQueue) {
-	var queue = LruQueue(3);
-	for (let counter = 0; counter < 1e7; counter++) {
+var cyclical = function (lruQueue) {
+	var queue = lruQueue(3);
+	for (var counter = 0; counter < 1e7; counter++) {
 		queue.hit("a");
 		queue.hit("b");
 		queue.hit("c");
 		queue.hit("d");
 	}
-}
+};
 
-function fibo(queueSize) {
-	var helper = function(LruQueue) {
-		var getMemoize = function(LruQueue) {
-			return function(fn) {
-				var cache = new Map(),
-					queue = LruQueue(queueSize);
-				return function(x) {
-					var result = cache.get(x),
-						cleared;
-					if (result !== undefined) {
-						queue.hit(x);
-						return result;
-					}
-					result = fn(x);
-					cache.set(x, result);
-					cleared = queue.hit(x);
-					if (cleared !== undefined) cache.delete(cleared);
+var fibo = function (queueSize) {
+	var helper = function (lruQueue) {
+		var memoize = function (fn) {
+			// eslint-disable-next-line no-undef
+			var cache = new Map(),
+				queue = lruQueue(queueSize);
+			return function (input) {
+				var result = cache.get(input),
+					cleared;
+				if (result !== undefined) {
+					queue.hit(input);
 					return result;
-				};
+				}
+				result = fn(input);
+				cache.set(input, result);
+				cleared = queue.hit(input);
+				if (cleared !== undefined) cache.delete(cleared);
+				return result;
 			};
 		};
 
-		var getMemoizedFibonacci = function(memoize) {
-			var fib = memoize(function(x) {
-				return x < 2 ? 1 : fib(x - 1) + fib(x - 2);
+		var getMemoizedFibonacci = function () {
+			var fib = memoize(function (index) {
+				return index < 2 ? 1 : fib(index - 1) + fib(index - 2);
 			});
 			return fib;
 		};
@@ -77,18 +77,15 @@ function fibo(queueSize) {
 		var repeatCount = 1000,
 			base = 4000,
 			memo,
-			i;
-
-		total = 0;
-		i = repeatCount;
+			i = repeatCount;
 		while (i--) {
-			memo = getMemoizedFibonacci(getMemoize(LruQueue));
+			memo = getMemoizedFibonacci();
 			memo(base);
 		}
 	};
 	Object.defineProperty(helper, "name", { value: "fibo_" + queueSize });
 	return helper;
-}
+};
 
 var testCases = [
 	randomInsert,
@@ -105,12 +102,14 @@ var implementations = {
 	"Linked list implementation": linkedListImplementation
 };
 
-testCases.forEach(function(test) {
+testCases.forEach(function (test) {
+	// eslint-disable-next-line no-undef, no-console
 	console.log("----" + test.name + "----");
-	Object.keys(implementations).forEach(function(name) {
+	Object.keys(implementations).forEach(function (name) {
 		var start = performance.now();
 		test(implementations[name]);
 		var total = performance.now() - start;
+		// eslint-disable-next-line no-undef, no-console
 		console.log(name + " -> " + total + "ms");
 	});
 });
