@@ -1,9 +1,10 @@
 "use strict";
+/* global Map */
+
 var toPosInt = require("es5-ext/number/to-pos-integer");
 
 var LinkedList = function () {
 	this.firstNode = this.lastNode = undefined;
-	// eslint-disable-next-line no-undef
 	this.keymap = new Map();
 };
 

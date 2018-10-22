@@ -1,4 +1,6 @@
 "use strict";
+/* global Map, console */
+
 var performance = require("perf_hooks").performance;
 var oldImplementation = require("./oldImplementation");
 var linkedListImplementation = require("./linkedListImplementation");
@@ -49,7 +51,6 @@ var cyclical = function (lruQueue) {
 var fibo = function (queueSize) {
 	var helper = function (lruQueue) {
 		var memoize = function (fn) {
-			// eslint-disable-next-line no-undef
 			var cache = new Map(),
 				queue = lruQueue(queueSize);
 			return function (input) {
@@ -103,13 +104,13 @@ var implementations = {
 };
 
 testCases.forEach(function (test) {
-	// eslint-disable-next-line no-undef, no-console
+	// eslint-disable-next-line no-console
 	console.log("----" + test.name + "----");
 	Object.keys(implementations).forEach(function (name) {
 		var start = performance.now();
 		test(implementations[name]);
 		var total = performance.now() - start;
-		// eslint-disable-next-line no-undef, no-console
+		// eslint-disable-next-line no-console
 		console.log(name + " -> " + total + "ms");
 	});
 });
