@@ -1,18 +1,19 @@
 "use strict";
+/* global Set */
 
 var toPosInt = require("es5-ext/number/to-pos-integer");
 
-module.exports = function(limit) {
+module.exports = function (limit) {
 	var queue = new Set(),
-		lastKey = undefined,
-		limit = toPosInt(limit);
+		lastKey;
+	limit = toPosInt(limit);
 	return {
-		hit: function(id) {
-			if (lastKey === id) return;
+		hit: function (id) {
+			if (lastKey === id) return undefined;
 			lastKey = id;
 			if (queue.delete(id)) {
 				queue.add(id);
-				return;
+				return undefined;
 			}
 			queue.add(id);
 			if (queue.size > limit) {
@@ -20,14 +21,15 @@ module.exports = function(limit) {
 				queue.delete(base);
 				return base;
 			}
+			return undefined;
 		},
-		delete: function(id) {
+		delete: function (id) {
 			if (lastKey === id) {
 				lastKey = undefined;
 			}
 			queue.delete(id);
 		},
-		clear: function() {
+		clear: function () {
 			queue.clear();
 		}
 	};
