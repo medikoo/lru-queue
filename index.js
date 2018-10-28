@@ -2,13 +2,13 @@
 
 var toPosInt = require("es5-ext/number/to-pos-integer");
 
-var LinkedList = function() {
+var LinkedList = function () {
 	this.firstNode = this.lastNode = undefined;
 	this.keymap = Object.create(null);
 	this.size = 0;
 };
 
-LinkedList.prototype.removeNode = function(node, updateKeymap) {
+LinkedList.prototype.removeNode = function (node, updateKeymap) {
 	if (node.next) {
 		node.next.previous = node.previous;
 	}
@@ -25,7 +25,7 @@ LinkedList.prototype.removeNode = function(node, updateKeymap) {
 	node.next = node.previous = undefined;
 };
 
-LinkedList.prototype.appendToHead = function(node, updateKeymap) {
+LinkedList.prototype.appendToHead = function (node, updateKeymap) {
 	if (this.firstNode) {
 		node.next = this.firstNode;
 		this.firstNode.previous = node;
@@ -39,26 +39,26 @@ LinkedList.prototype.appendToHead = function(node, updateKeymap) {
 	}
 };
 
-LinkedList.prototype.clear = function() {
+LinkedList.prototype.clear = function () {
 	this.firstNode = this.lastNode = undefined;
 	this.keymap = Object.create(null);
 	this.size = 0;
 };
 
-LinkedList.prototype.getNode = function(key) {
+LinkedList.prototype.getNode = function (key) {
 	return this.keymap[key];
 };
 
-LinkedList.prototype.getSize = function() {
+LinkedList.prototype.getSize = function () {
 	return this.size;
 };
 
-module.exports = function(limit) {
+module.exports = function (limit) {
 	var list = new LinkedList();
 	limit = toPosInt(limit);
 
 	return {
-		hit: function(key) {
+		hit: function (key) {
 			var node = list.getNode(key);
 			if (!node) {
 				list.appendToHead({ key: key }, true);
@@ -73,13 +73,13 @@ module.exports = function(limit) {
 			}
 			return undefined;
 		},
-		delete: function(key) {
+		delete: function (key) {
 			var node = list.getNode(key);
 			if (node) {
 				list.removeNode(node, true);
 			}
 		},
-		clear: function() {
+		clear: function () {
 			list.clear();
 		}
 	};
