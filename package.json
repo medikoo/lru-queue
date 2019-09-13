@@ -26,7 +26,7 @@
   },
   "scripts": {
     "lint": "eslint --ignore-path=.gitignore .",
-    "test": "tad index.js"
+    "test": "node node_modules/tad/bin/tad"
   },
   "license": "ISC"
 }
