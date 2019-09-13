@@ -25,7 +25,6 @@
     "root": true
   },
   "scripts": {
-    "fix-lint": "eslint --ignore-path=.gitignore . --fix",
     "lint": "eslint --ignore-path=.gitignore .",
     "test": "tad index.js"
   },
