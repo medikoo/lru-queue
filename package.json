@@ -1,6 +1,6 @@
 {
   "name": "lru-queue",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "LRU Queue",
   "author": "Mariusz Nowak <medyk@medikoo.com> (http://www.medikoo.com/)",
   "repository": {
