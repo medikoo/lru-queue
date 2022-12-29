@@ -67,6 +67,12 @@ queue.clear(); // size: 0
 
     $ npm test
 
+## Security contact information
+
+To report a security vulnerability, please use the
+[Tidelift security contact](https://tidelift.com/security).
+Tidelift will coordinate the fix and disclosure.
+
 [nix-build-image]: https://semaphoreci.com/api/v1/medikoo-org/lru-queue/branches/master/shields_badge.svg
 [nix-build-url]: https://semaphoreci.com/medikoo-org/lru-queue
 [win-build-image]: https://ci.appveyor.com/api/projects/status/jlnfo0hpf988u5v6?svg=true
